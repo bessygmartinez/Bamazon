@@ -4,13 +4,15 @@ SELECT * FROM products;
 CREATE DATABASE bamazon;
 
 CREATE TABLE products (
-id INTEGER(11) AUTO_INCREMENT NOT NULL,
+id INT AUTO_INCREMENT NOT NULL UNIQUE,
 product_name VARCHAR(100) NOT NULL,
 department_name VARCHAR(100) NOT NULL,
 price DECIMAL(10,2),
-stock_quantity INTEGER (20),
+stock_quantity INT NOT NULL,
 PRIMARY KEY (id)
 );
+
+DROP TABLE products;
 
 INSERT INTO products (product_name, department_name, price, stock_quantity)
 VALUES ("Watchmen (2019 Edition)", "Books", 14.99, 50);
