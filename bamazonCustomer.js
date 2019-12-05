@@ -33,11 +33,11 @@ function inventoryList() {
             table.push([`${res.id}`, `${res.product_name}`, `${res.department_name}`, `$${formattedPrice}`, `${res.stock_quantity}`])
             })
         bamazonTitle();
-        console.log(table.toString())
+        console.log(table.toString()+ "\n")
         inquirer.prompt({
             name: 'selectedID',
             type: 'input',
-            message: 'Which item would you like to buy? (Enter Item ID)'
+            message: 'Which item would you like to buy? (Enter Item ID)'.green
         })
             .then(buyingItem => {
                 if (buyingItem.selectedID > res.length | buyingItem.selectedID < 1) {
@@ -45,12 +45,12 @@ function inventoryList() {
                     process.exit(1)
                 }
                 inquirer.prompt({
-                    name: "qtyOrdered",
-                    tyep: "input",
-                    message: "How many would you like to order?"
+                    name: 'qtyOrdered',
+                    tyep: 'input',
+                    message: 'How many would you like to order?'.green
                 })
                     .then(qty => {
-                        let buyQuery = `select * from ${process.env.dbTable} where id = ${buyingItem.selectedID} limit 1`;
+                        let buyQuery = `select * from ${process.env.dbTable} where id = ${buyingItem.selectedID}`;
                         connection.query(buyQuery, (error, res) => {
                             if (error) throw error
                             let table = new Table({
@@ -59,7 +59,8 @@ function inventoryList() {
                             res.forEach(res => {
                                 let formattedPrice = formatMoney(`${res.price}`);
                                 let subtotal = formatMoney(`${formattedPrice}` * qty.qtyOrdered);
-                                if (qty.qtyOrdered > `${res.stock_quantity}`) {
+                                let inStock = `${res.stock_quantity}`
+                                if (qty.qtyOrdered > inStock) {
                                     notEnoughStock()
                                 } else {
                                     table.push([`${res.id}`, `${qty.qtyOrdered}`, `${res.product_name}`, `${res.department_name}`, `$${formattedPrice}`, `$${subtotal}`])
@@ -68,7 +69,10 @@ function inventoryList() {
                                     let updateTable = `UPDATE ${process.env.dbTable} SET stock_quantity = ${res.stock_quantity - qty.qtyOrdered} where id = ${res.id}`
                                     connection.query(updateTable, (error, res) => {
                                         if (error) throw error
-                                        console.log("Inventory has been updated".yellow)
+                                        console.log(`
+                                        +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+                                                 Stock has been updated        
+                                        +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+\n`.yellow)
                                     })
                                 }
                                 connection.end();
@@ -89,29 +93,29 @@ const bamazonTitle = () => {
                             ██████╔╝███████║██╔████╔██║███████║  ███╔╝ ██║   ██║██╔██╗ ██║
                             ██╔══██╗██╔══██║██║╚██╔╝██║██╔══██║ ███╔╝  ██║   ██║██║╚██╗██║
                             ██████╔╝██║  ██║██║ ╚═╝ ██║██║  ██║███████╗╚██████╔╝██║ ╚████║
-                            ╚═════╝ ╚═╝  ╚═╝╚═╝     ╚═╝╚═╝  ╚═╝╚══════╝ ╚═════╝ ╚═╝  ╚═══╝`.cyan);
+                            ╚═════╝ ╚═╝  ╚═╝╚═╝     ╚═╝╚═╝  ╚═╝╚══════╝ ╚═════╝ ╚═╝  ╚═══╝\n`.cyan);
 }
 
 function itemNotExist() {
     console.log(`
-    +-+-+-+-+ +-+-+-+ +-+-+-+-+-+-+-+-+-+
-         Sorry! Item Does Not Exist.     
-    +-+-+-+-+ +-+-+-+ +-+-+-+-+-+-+-+-+-+
+                                        +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+                                            That Item ID Does Not Exist.     
+                                        +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+\n
    `.brightRed);
 }
 
 function notEnoughStock() {
     console.log(`
-    +-+-+-+-+ +-+-+-+ +-+-+-+-+-+-+-+-+-+
-         Sorry! Not Enough In Stock.     
-    +-+-+-+-+ +-+-+-+ +-+-+-+-+-+-+-+-+-+
+                                        +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+                                            Sorry! Not Enough In Stock.     
+                                        +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+\n
    `.yellow);
 }
 
 function youJustOrdered() {
     console.log(`
-    +-+-+-+-+ +-+-+-+ +-+-+-+-+-+-+-+-+-+
-       You Just Ordered the Following:   
-    +-+-+-+-+ +-+-+-+ +-+-+-+-+-+-+-+-+-+
-   `.green);
+                                        +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+                                            You Just Ordered the Following:   
+                                        +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   `.cyan);
 }
