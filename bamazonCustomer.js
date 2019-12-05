@@ -31,9 +31,9 @@ function inventoryList() {
         res.forEach(res => {
             let formattedPrice = formatMoney(`${res.price}`);
             table.push([`${res.id}`, `${res.product_name}`, `${res.department_name}`, `$${formattedPrice}`, `${res.stock_quantity}`])
-            })
+        })
         bamazonTitle();
-        console.log(table.toString()+ "\n")
+        console.log(table.toString() + "\n")
         inquirer.prompt({
             name: 'selectedID',
             type: 'input',
@@ -48,10 +48,8 @@ function inventoryList() {
                     name: 'qtyOrdered',
                     tyep: 'input',
                     message: 'How many would you like to order?'.green
-                })
-                    .then(qty => {
-                        let buyQuery = `select * from ${process.env.dbTable} where id = ${buyingItem.selectedID}`;
-                        connection.query(buyQuery, (error, res) => {
+                }).then(qty => {
+                        connection.query(`SELECT * FROM ${process.env.dbTable} WHERE id = ${buyingItem.selectedID}`, (error, res) => {
                             if (error) throw error
                             let table = new Table({
                                 head: ["ID".green.bold, "QTY ORDERED".green.bold, "PRODUCT NAME".green.bold, "DEPARTMENT".green.bold, "PRICE PER".green.bold, "SUBTOTAL".green.bold]
@@ -59,10 +57,7 @@ function inventoryList() {
                             res.forEach(res => {
                                 let formattedPrice = formatMoney(`${res.price}`);
                                 let subtotal = formatMoney(`${formattedPrice}` * qty.qtyOrdered);
-                                let inStock = `${res.stock_quantity}`
-                                if (qty.qtyOrdered > inStock) {
-                                    notEnoughStock()
-                                } else {
+                                if (qty.qtyOrdered <= res.stock_quantity) {
                                     table.push([`${res.id}`, `${qty.qtyOrdered}`, `${res.product_name}`, `${res.department_name}`, `$${formattedPrice}`, `$${subtotal}`])
                                     youJustOrdered()
                                     console.log(table.toString())
@@ -74,6 +69,9 @@ function inventoryList() {
                                                  Stock has been updated        
                                         +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+\n`.yellow)
                                     })
+                                    
+                                } else {
+                                    notEnoughStock();
                                 }
                                 connection.end();
                             })
