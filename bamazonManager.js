@@ -1,11 +1,11 @@
 //Node packages...
 const mysql = require("mysql");
 const inquirer = require("inquirer");
-//const Table = require("cli-table");
+const Table = require("cli-table");
 require("colors");
 require("dotenv").config();
-//const formatMoney = require('./formatMoney');
-//const connQuery = `SELECT * FROM ${process.env.dbTable}`;
+const formatMoney = require('./formatMoney');
+const connQuery = `SELECT * FROM ${process.env.dbTable}`;
 
 let menuItems = [
     'View Products for Sale',
@@ -62,7 +62,20 @@ const runMenuCommand = (menuItemCommand) => {
     };
 };
 
-const viewProducts = () => console.log("View Products");  
+const viewProducts = () => {
+    connection.query(connQuery, (err, res) => {
+        if (err) throw err;
+        let table = new Table({
+            head: ["ID".green.bold, "PRODUCT NAME".green.bold, "DEPARTMENT".green.bold, "PRICE".green.bold, "IN STOCK".green.bold]
+        })
+        res.forEach(res => {
+            let formattedPrice = formatMoney(`${res.price}`);
+            table.push([`${res.id}`, `${res.product_name}`, `${res.department_name}`, `$${formattedPrice}`, `${res.stock_quantity}`])
+        })
+        console.log(table.toString())
+    })
+    connection.end()
+};
 
 const viewLowInventory = () => console.log("View Low Inventory");
 
@@ -86,4 +99,4 @@ const bamazonManagerTitle = () => console.log(`
 ██║ ╚═╝ ██║██║  ██║██║ ╚████║██║  ██║╚██████╔╝███████╗██║  ██║
 ╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═══╝╚═╝  ╚═╝ ╚═════╝ ╚══════╝╚═╝  ╚═╝
                                                               
-`.cyan)
+`.cyan);
