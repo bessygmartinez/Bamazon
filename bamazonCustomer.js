@@ -66,7 +66,7 @@ function prompts() {
                                 let subtotal = formatMoney(`${formattedPrice}` * qty.qtyOrdered);
                                 if (qty.qtyOrdered <= res.stock_quantity) {
                                     table.push([`${res.id}`, `${qty.qtyOrdered}`, `${res.product_name}`, `${res.department_name}`, `$${formattedPrice}`, `$${subtotal}`])
-                                    youJustOrdered()
+                                    youJustOrdered();
                                     console.log(table.toString())
                                     let updateTable = `UPDATE ${process.env.dbTable} SET stock_quantity = ${res.stock_quantity - qty.qtyOrdered} where id = ${res.id}`
                                     connection.query(updateTable, (error, res) => {
@@ -75,8 +75,8 @@ function prompts() {
                                         +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
                                                  Stock has been updated        
                                         +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+\n`.yellow)
+                                        tryAgain();
                                     })
-                                    connection.end();
                                 } else {
                                     notEnoughStock();
                                 }
@@ -107,6 +107,10 @@ function itemNotExist() {
                                              That item ID does not exist     
                                         +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+\n
    `.brightRed);
+   tryAgain();
+}
+
+function tryAgain(){
    inquirer.prompt ({
        name: "tryAgain",
        type: "confirm",
@@ -131,6 +135,7 @@ function itemNotExist() {
                                   ╚██████╔╝╚██████╔╝╚██████╔╝██████╔╝██████╔╝   ██║   ███████╗██╗              
                                    ╚═════╝  ╚═════╝  ╚═════╝ ╚═════╝ ╚═════╝    ╚═╝   ╚══════╝╚═╝\n`.cyan)
            process.exit(1);
+           connection.end();
        }
    })
 }
