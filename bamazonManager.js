@@ -30,7 +30,7 @@ connection.connect(function (err) {
 });
 
 function menuList() {
-    //bamazonManagerTitle();
+    bamazonManagerTitle();
     inquirer.prompt({
         name: 'menuItemCommand',
         type: 'list',
@@ -62,18 +62,28 @@ function runMenuCommand(menuItemCommand) {
     }
 };
 
-function viewProducts() {
-    console.log("View Products");
-};
+const viewProducts = () => console.log("View Products");  
 
-function viewLowInventory() {
-    console.log("View Low Inventory");
-};
+const viewLowInventory = () => console.log("View Low Inventory");
 
-function addInventory() {
-    console.log("Add Inventory");
-};
+const addInventory = () => console.log("Add Inventory");
 
-function addNewProduct() {
-    console.log("Add New Product");
-};
+const addNewProduct = () => console.log("Add New Product");
+
+const bamazonManagerTitle = () => console.log(`
+
+██████╗  █████╗ ███╗   ███╗ █████╗ ███████╗ ██████╗ ███╗   ██╗
+██╔══██╗██╔══██╗████╗ ████║██╔══██╗╚══███╔╝██╔═══██╗████╗  ██║
+██████╔╝███████║██╔████╔██║███████║  ███╔╝ ██║   ██║██╔██╗ ██║
+██╔══██╗██╔══██║██║╚██╔╝██║██╔══██║ ███╔╝  ██║   ██║██║╚██╗██║
+██████╔╝██║  ██║██║ ╚═╝ ██║██║  ██║███████╗╚██████╔╝██║ ╚████║
+╚═════╝ ╚═╝  ╚═╝╚═╝     ╚═╝╚═╝  ╚═╝╚══════╝ ╚═════╝ ╚═╝  ╚═══╝
+                                                              
+███╗   ███╗ █████╗ ███╗   ██╗ █████╗  ██████╗ ███████╗██████╗ 
+████╗ ████║██╔══██╗████╗  ██║██╔══██╗██╔════╝ ██╔════╝██╔══██╗
+██╔████╔██║███████║██╔██╗ ██║███████║██║  ███╗█████╗  ██████╔╝
+██║╚██╔╝██║██╔══██║██║╚██╗██║██╔══██║██║   ██║██╔══╝  ██╔══██╗
+██║ ╚═╝ ██║██║  ██║██║ ╚████║██║  ██║╚██████╔╝███████╗██║  ██║
+╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═══╝╚═╝  ╚═╝ ╚═════╝ ╚══════╝╚═╝  ╚═╝
+                                                              
+`.cyan)
