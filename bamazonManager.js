@@ -29,7 +29,7 @@ connection.connect(function (err) {
     menuList();
 });
 
-function menuList() {
+const menuList = () => {
     bamazonManagerTitle();
     inquirer.prompt({
         name: 'menuItemCommand',
