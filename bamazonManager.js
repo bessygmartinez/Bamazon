@@ -77,7 +77,24 @@ const viewProducts = () => {
     connection.end()
 };
 
-const viewLowInventory = () => console.log("View Low Inventory");
+const viewLowInventory = () => {
+    connection.query(`${connQuery} WHERE stock_quantity < 10`, (err, res) => {
+        if (err) throw err;
+        let table = new Table({
+            head: ["ID".green.bold, "PRODUCT NAME".green.bold, "DEPARTMENT".green.bold, "PRICE".green.bold, "IN STOCK".green.bold]
+        })
+        res.forEach(res => {
+            let formattedPrice = formatMoney(`${res.price}`);
+            console.log(`
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+Stock is currently low on these items:        
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+\n`.bold.brightRed)
+            table.push([`${res.id}`, `${res.product_name}`, `${res.department_name}`, `$${formattedPrice}`, `${res.stock_quantity}`])
+        })
+        console.log(table.toString());
+    })
+    connection.end();
+};
 
 const addInventory = () => console.log("Add Inventory");
 
