@@ -42,7 +42,7 @@ function menuList() {
     })
 };
 
-function runMenuCommand(menuItemCommand) {
+const runMenuCommand = (menuItemCommand) => {
     switch (menuItemCommand) {
         case menuItems[0]:
             viewProducts();
@@ -59,7 +59,7 @@ function runMenuCommand(menuItemCommand) {
         case menuItems[3]:
             addNewProduct();
             break;
-    }
+    };
 };
 
 const viewProducts = () => console.log("View Products");  
