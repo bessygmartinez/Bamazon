@@ -5,6 +5,7 @@ const Table = require("cli-table");
 require("colors");
 require("dotenv").config();
 const formatMoney = require('./formatMoney');
+const connQuery = `SELECT * FROM ${process.env.dbTable}`;
 
 //Create connection to bamazon database
 const connection = mysql.createConnection({
@@ -22,7 +23,6 @@ connection.connect(function (err) {
 });
 
 function inventoryList() {
-    let connQuery = `SELECT * FROM ${process.env.dbTable}`
     connection.query(connQuery, function (err, res) {
         if (err) throw err;
         let table = new Table({
@@ -34,6 +34,14 @@ function inventoryList() {
         })
         bamazonTitle();
         console.log(table.toString() + "\n")
+        prompts();
+    })
+
+}
+
+function prompts() {
+    connection.query(connQuery, function(err, res) {
+        if (err) throw err;
         inquirer.prompt({
             name: 'selectedID',
             type: 'input',
@@ -42,8 +50,7 @@ function inventoryList() {
             .then(buyingItem => {
                 if (buyingItem.selectedID > res.length | buyingItem.selectedID < 1) {
                     itemNotExist()
-                    process.exit(1)
-                }
+                } else {
                 inquirer.prompt({
                     name: 'qtyOrdered',
                     tyep: 'input',
@@ -69,51 +76,80 @@ function inventoryList() {
                                                  Stock has been updated        
                                         +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+\n`.yellow)
                                     })
-                                    
+                                    connection.end();
                                 } else {
                                     notEnoughStock();
                                 }
-                                connection.end();
                             })
                         })
-                    })
+                    })}
             })
     })
-
 }
+
+
 
 //Title [Used http://patorjk.com/software/taag for ACSII art]
 const bamazonTitle = () => {
     console.log(`
     
-                            ██████╗  █████╗ ███╗   ███╗ █████╗ ███████╗ ██████╗ ███╗   ██╗
-                            ██╔══██╗██╔══██╗████╗ ████║██╔══██╗╚══███╔╝██╔═══██╗████╗  ██║
-                            ██████╔╝███████║██╔████╔██║███████║  ███╔╝ ██║   ██║██╔██╗ ██║
-                            ██╔══██╗██╔══██║██║╚██╔╝██║██╔══██║ ███╔╝  ██║   ██║██║╚██╗██║
-                            ██████╔╝██║  ██║██║ ╚═╝ ██║██║  ██║███████╗╚██████╔╝██║ ╚████║
-                            ╚═════╝ ╚═╝  ╚═╝╚═╝     ╚═╝╚═╝  ╚═╝╚══════╝ ╚═════╝ ╚═╝  ╚═══╝\n`.cyan);
+                              ██████╗  █████╗ ███╗   ███╗ █████╗ ███████╗ ██████╗ ███╗   ██╗
+                              ██╔══██╗██╔══██╗████╗ ████║██╔══██╗╚══███╔╝██╔═══██╗████╗  ██║
+                              ██████╔╝███████║██╔████╔██║███████║  ███╔╝ ██║   ██║██╔██╗ ██║
+                              ██╔══██╗██╔══██║██║╚██╔╝██║██╔══██║ ███╔╝  ██║   ██║██║╚██╗██║
+                              ██████╔╝██║  ██║██║ ╚═╝ ██║██║  ██║███████╗╚██████╔╝██║ ╚████║
+                              ╚═════╝ ╚═╝  ╚═╝╚═╝     ╚═╝╚═╝  ╚═╝╚══════╝ ╚═════╝ ╚═╝  ╚═══╝\n`.cyan);
 }
 
 function itemNotExist() {
     console.log(`
                                         +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-                                            That Item ID Does Not Exist.     
+                                             That item ID does not exist     
                                         +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+\n
    `.brightRed);
+   inquirer.prompt ({
+       name: "tryAgain",
+       type: "confirm",
+       message: "Would you like to try again?".green
+   })
+   .then(function(user) {
+       if (user.tryAgain == true) {
+           inventoryList();
+       } else {
+           console.log(`
+                           ████████╗██╗  ██╗ █████╗ ███╗   ██╗██╗  ██╗    ██╗   ██╗ ██████╗ ██╗   ██╗   
+                           ╚══██╔══╝██║  ██║██╔══██╗████╗  ██║██║ ██╔╝    ╚██╗ ██╔╝██╔═══██╗██║   ██║   
+                              ██║   ███████║███████║██╔██╗ ██║█████╔╝      ╚████╔╝ ██║   ██║██║   ██║   
+                              ██║   ██╔══██║██╔══██║██║╚██╗██║██╔═██╗       ╚██╔╝  ██║   ██║██║   ██║   
+                              ██║   ██║  ██║██║  ██║██║ ╚████║██║  ██╗       ██║   ╚██████╔╝╚██████╔╝██╗
+                              ╚═╝   ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═══╝╚═╝  ╚═╝       ╚═╝    ╚═════╝  ╚═════╝ ╚═╝
+                                                                                        
+                                   ██████╗  ██████╗  ██████╗ ██████╗ ██████╗ ██╗   ██╗███████╗██╗              
+                                  ██╔════╝ ██╔═══██╗██╔═══██╗██╔══██╗██╔══██╗╚██╗ ██╔╝██╔════╝██║              
+                                  ██║  ███╗██║   ██║██║   ██║██║  ██║██████╔╝ ╚████╔╝ █████╗  ██║              
+                                  ██║   ██║██║   ██║██║   ██║██║  ██║██╔══██╗  ╚██╔╝  ██╔══╝  ╚═╝              
+                                  ╚██████╔╝╚██████╔╝╚██████╔╝██████╔╝██████╔╝   ██║   ███████╗██╗              
+                                   ╚═════╝  ╚═════╝  ╚═════╝ ╚═════╝ ╚═════╝    ╚═╝   ╚══════╝╚═╝\n`.cyan)
+           process.exit(1);
+       }
+   })
 }
 
 function notEnoughStock() {
     console.log(`
                                         +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-                                            Sorry! Not Enough In Stock.     
-                                        +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+\n
+                                            Sorry! Not enough in stock.     
+                                            Please modify your quantity.
+                                        +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+
    `.yellow);
+   prompts();
 }
 
 function youJustOrdered() {
     console.log(`
                                         +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-                                            You Just Ordered the Following:   
+                                         You have just ordered the following:   
                                         +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
    `.cyan);
 }
