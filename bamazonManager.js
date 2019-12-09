@@ -34,7 +34,7 @@ const menuList = () => {
     inquirer.prompt({
         name: 'menuItemCommand',
         type: 'list',
-        message: 'Welcome. What would you like to do?',
+        message: 'What would you like to do?'.green,
         choices: menuItems
     })
     .then(menuSelection => {
@@ -72,9 +72,10 @@ const viewProducts = () => {
             let formattedPrice = formatMoney(`${res.price}`);
             table.push([`${res.id}`, `${res.product_name}`, `${res.department_name}`, `$${formattedPrice}`, `${res.stock_quantity}`])
         })
-        console.log(table.toString())
+        console.log(table.toString());
+        tryAgain();
     })
-    connection.end()
+    
 };
 
 const viewLowInventory = () => {
@@ -92,19 +93,20 @@ Stock is currently low on these products:
             table.push([`${res.id}`, `${res.product_name}`, `${res.department_name}`, `$${formattedPrice}`, `${res.stock_quantity}`])
         })
         console.log(table.toString());
+        tryAgain();
     })
-    connection.end();
+    
 };
 
 const updateTheInventory = () => {
     let questions = [{
         name: 'id', 
         type: 'input',
-        message: 'Enter product ID you would like to update:'
+        message: 'Enter product ID you would like to update:'.green
     }, {
         name: 'qty',
         type: 'input', 
-        message: 'Enter the new quantity for this product:'
+        message: 'Enter the new quantity for this product:'.green
     }]
     const updateInventory = (answers) => {
         let updateQuery = `UPDATE ${process.env.dbTable} SET stock_quantity = ${answers.qty} where ID = ${answers.id}`
@@ -113,9 +115,10 @@ const updateTheInventory = () => {
             console.log(`
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-++-+-+-+-+-+-+-+-+-+-+-+-+
 Inventory for product ID #${answers.id} has been updated!
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-++-+-+-+-+-+-+-+-+-+-+-+-+`.green)
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-++-+-+-+-+-+-+-+-+-+-+-+-+\n`.bold.brightCyan);
+tryAgain();
         })
-        connection.end();
+        
     }
     inquirer.prompt(questions).then(updateInventory);
 };
@@ -124,19 +127,19 @@ const addNewProduct = () => {
     let questions = [{
         name: 'productName',
         type: 'input',
-        message: 'Enter the name of the product you would like to add:'
+        message: 'Enter the name of the product you would like to add:'.green
     }, {
         name: 'deptName',
         type: 'input',
-        message: 'Enter the department where this product will be stored:'
+        message: 'Enter the department where this product will be stored:'.green
     }, {
         name: 'productPrice',
         type: 'input',
-        message: 'Enter the price of this product:'
+        message: 'Enter the price of this product:'.green
     }, {
         name: 'productStock',
         type: 'input',
-        message: 'Enter the quantity of stock for this item:'
+        message: 'Enter the quantity of stock for this item:'.green
     }]
     const newProductAddition = (answers) => {
         let addQuery = `INSERT INTO ${process.env.dbTable} (product_name, department_name, price, stock_quantity) VALUES ("${answers.productName}", "${answers.deptName}", "${answers.productPrice}", "${answers.productStock}")`
@@ -153,16 +156,45 @@ const addNewProduct = () => {
             console.log(`
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
   The following product has been added:      
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+\n`.bold.brightRed)
-            table.push([`${res[0].id}`, `${res[0].product_name}`, `${res[0].department_name}`, `$${formattedPrice}`, `${res[0].stock_quantity}`])
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+\n`.bold.yellow)
+            table.push([`${res[0].id}`, `${res[0].product_name}`, `${res[0].department_name}`, `$${formattedPrice}`, `${res[0].stock_quantity}\n`])
             console.log(table.toString());
+            tryAgain();
         })
-        connection.end();
+        
     }
     inquirer.prompt(questions).then(newProductAddition);
 };
 
-//const tryAgain = () => console.log("trying again");
+const tryAgain = () => {
+    inquirer.prompt ({
+        name: "tryAgain",
+        type: "confirm",
+        message: "Would you like to do anyting else?".green
+    })
+    .then(function(user) {
+        if (user.tryAgain == true) {
+            menuList();
+        } else {
+            console.log(`
+████████╗██╗  ██╗ █████╗ ███╗   ██╗██╗  ██╗    ██╗   ██╗ ██████╗ ██╗   ██╗   
+╚══██╔══╝██║  ██║██╔══██╗████╗  ██║██║ ██╔╝    ╚██╗ ██╔╝██╔═══██╗██║   ██║   
+   ██║   ███████║███████║██╔██╗ ██║█████╔╝      ╚████╔╝ ██║   ██║██║   ██║   
+   ██║   ██╔══██║██╔══██║██║╚██╗██║██╔═██╗       ╚██╔╝  ██║   ██║██║   ██║   
+   ██║   ██║  ██║██║  ██║██║ ╚████║██║  ██╗       ██║   ╚██████╔╝╚██████╔╝██╗
+   ╚═╝   ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═══╝╚═╝  ╚═╝       ╚═╝    ╚═════╝  ╚═════╝ ╚═╝
+                                                                                         
+ ██████╗  ██████╗  ██████╗ ██████╗ ██████╗ ██╗   ██╗███████╗██╗              
+██╔════╝ ██╔═══██╗██╔═══██╗██╔══██╗██╔══██╗╚██╗ ██╔╝██╔════╝██║              
+██║  ███╗██║   ██║██║   ██║██║  ██║██████╔╝ ╚████╔╝ █████╗  ██║              
+██║   ██║██║   ██║██║   ██║██║  ██║██╔══██╗  ╚██╔╝  ██╔══╝  ╚═╝              
+╚██████╔╝╚██████╔╝╚██████╔╝██████╔╝██████╔╝   ██║   ███████╗██╗              
+ ╚═════╝  ╚═════╝  ╚═════╝ ╚═════╝ ╚═════╝    ╚═╝   ╚══════╝╚═╝\n`.cyan)
+            process.exit(1);
+            connection.end();
+        }
+    })
+ }
 
 const bamazonManagerTitle = () => console.log(`
 
