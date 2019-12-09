@@ -85,6 +85,15 @@ If `bamazonManager.js` is run, the app will prompt the user to choose from the f
     * Stock quantity
       * **Example:**
       ![alt text](https://raw.githubusercontent.com/bessygmartinez/Bamazon/master/gifs/BamazonManager_ViewProd.gif "bamazonManager.js View Products")
+      
+#### View Low Inventory
+ * If the user chooses `View Low Inventory`, the program will display a table with all products in the database that have stock with quantities less than 10.
+ * If there are no products that have stock with quantities less than 10, the table will return empty.
+ * The program will then prompt the user if they would like to try again.
+   * If the user chooses "yes/y", then the menu items will be displayed again.
+   * If the user chooses "no/n", then the program with display a goodbye message and the program stops running. 
+      * **Example:**
+  ![alt text](https://raw.githubusercontent.com/bessygmartinez/Bamazon/master/gifs/BamazonManager_ViewLowInv.gif "bamazonManager.js View Low Inventory")
 
 ---
     
