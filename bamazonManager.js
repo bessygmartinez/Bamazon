@@ -10,7 +10,7 @@ const connQuery = `SELECT * FROM ${process.env.dbTable}`;
 let menuItems = [
     'View Products for Sale',
     'View Low Inventory',
-    'Add Inventory',
+    'Upate Product Quantity',
     'Add New Product'
 ];
 
@@ -53,7 +53,7 @@ const runMenuCommand = (menuItemCommand) => {
             break;
         
         case menuItems[2]:
-            addInventory();
+            updateTheInventory();
             break;
 
         case menuItems[3]:
@@ -86,9 +86,9 @@ const viewLowInventory = () => {
         res.forEach(res => {
             let formattedPrice = formatMoney(`${res.price}`);
             console.log(`
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-Stock is currently low on these items:        
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+\n`.bold.brightRed)
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+Stock is currently low on these products:        
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+\n`.bold.brightRed)
             table.push([`${res.id}`, `${res.product_name}`, `${res.department_name}`, `$${formattedPrice}`, `${res.stock_quantity}`])
         })
         console.log(table.toString());
@@ -96,9 +96,73 @@ Stock is currently low on these items:
     connection.end();
 };
 
-const addInventory = () => console.log("Add Inventory");
+const updateTheInventory = () => {
+    let questions = [{
+        name: 'id', 
+        type: 'input',
+        message: 'Enter product ID you would like to update:'
+    }, {
+        name: 'qty',
+        type: 'input', 
+        message: 'Enter the new quantity for this product:'
+    }]
+    const updateInventory = (answers) => {
+        let updateQuery = `UPDATE ${process.env.dbTable} SET stock_quantity = ${answers.qty} where ID = ${answers.id}`
+        connection.query(updateQuery, (err, res) => {
+            if (err) throw err;
+            console.log(`
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-++-+-+-+-+-+-+-+-+-+-+-+-+
+Inventory for product ID #${answers.id} has been updated!
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-++-+-+-+-+-+-+-+-+-+-+-+-+`.green)
+        })
+        connection.end();
+    }
+    inquirer.prompt(questions).then(updateInventory);
+};
 
-const addNewProduct = () => console.log("Add New Product");
+const addNewProduct = () => {
+    let questions = [{
+        name: 'productName',
+        type: 'input',
+        message: 'Enter the name of the product you would like to add:'
+    }, {
+        name: 'deptName',
+        type: 'input',
+        message: 'Enter the department where this product will be stored:'
+    }, {
+        name: 'productPrice',
+        type: 'input',
+        message: 'Enter the price of this product:'
+    }, {
+        name: 'productStock',
+        type: 'input',
+        message: 'Enter the quantity of stock for this item:'
+    }]
+    const newProductAddition = (answers) => {
+        let addQuery = `INSERT INTO ${process.env.dbTable} (product_name, department_name, price, stock_quantity) VALUES ("${answers.productName}", "${answers.deptName}", "${answers.productPrice}", "${answers.productStock}")`
+        connection.query(addQuery, (err, res) => {
+            if (err) throw err;
+            
+        })
+        connection.query(`${connQuery} WHERE product_name = "${answers.productName}"`, (err, res) => {
+            if (err) throw err;
+            let table = new Table({
+                head: ["ID".green.bold, "PRODUCT NAME".green.bold, "DEPARTMENT".green.bold, "PRICE".green.bold, "IN STOCK".green.bold]
+            })
+            let formattedPrice = formatMoney(`${res[0].price}`);
+            console.log(`
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  The following product has been added:      
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+\n`.bold.brightRed)
+            table.push([`${res[0].id}`, `${res[0].product_name}`, `${res[0].department_name}`, `$${formattedPrice}`, `${res[0].stock_quantity}`])
+            console.log(table.toString());
+        })
+        connection.end();
+    }
+    inquirer.prompt(questions).then(newProductAddition);
+};
+
+//const tryAgain = () => console.log("trying again");
 
 const bamazonManagerTitle = () => console.log(`
 
