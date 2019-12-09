@@ -1,18 +1,15 @@
 USE bamazon;
-SELECT * FROM products;
 
 CREATE DATABASE bamazon;
 
 CREATE TABLE products (
-id INT AUTO_INCREMENT NOT NULL UNIQUE,
+id INT AUTO_INCREMENT UNIQUE,
 product_name VARCHAR(100) NOT NULL,
 department_name VARCHAR(100) NOT NULL,
 price DECIMAL(10,2),
-stock_quantity INT NOT NULL,
+stock_quantity INT,
 PRIMARY KEY (id)
 );
-
-DROP TABLE products;
 
 INSERT INTO products (product_name, department_name, price, stock_quantity)
 VALUES ("Watchmen (2019 Edition)", "Books", 14.99, 50);
@@ -34,3 +31,5 @@ INSERT INTO products (product_name, department_name, price, stock_quantity)
 VALUES ("KitchenAid 5-Qt. Stand Mixer", "Home & Kitchen", 429.99, 33);
 INSERT INTO products (product_name, department_name, price, stock_quantity)
 VALUES ("Nespresso Original Espresso Machine", "Home & Kitchen", 164.99, 52);
+
+SELECT * FROM products;
