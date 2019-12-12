@@ -68,7 +68,7 @@ function prompts() {
                                     table.push([`${res.id}`, `${qty.qtyOrdered}`, `${res.product_name}`, `${res.department_name}`, `$${formattedPrice}`, `$${subtotal}`])
                                     youJustOrdered();
                                     console.log(table.toString())
-                                    let updateTable = `UPDATE ${process.env.dbTable} SET stock_quantity = ${res.stock_quantity - qty.qtyOrdered} where id = ${res.id}`
+                                    let updateTable = `UPDATE ${process.env.dbTable} SET stock_quantity = ${res.stock_quantity - qty.qtyOrdered}, product_sales = ${subtotal} + product_sales WHERE id = ${res.id}`
                                     connection.query(updateTable, (error, res) => {
                                         if (error) throw error
                                         console.log(`
