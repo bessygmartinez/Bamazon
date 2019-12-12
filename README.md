@@ -3,7 +3,7 @@
 ---
 
 ## ABOUT BAMAZON
-Bamazon is a command line storefront application using Node.js, along with npm packages, and MySQL database backend. There are three different interfaces to choose from: `bamazonCustomer.js`, `bamazonManager.js`, and `bamazonSupervisor.js`.
+Bamazon is a command line storefront application using Node.js, along with npm packages, and MySQL database backend. There are two different interfaces to choose from: `bamazonCustomer.js` and `bamazonManager.js`.
 
 * :credit_card: `bamazonCustomer.js` - [*Buying Products*](https://github.com/bessygmartinez/Bamazon#bamazoncustomerjs)
   * This interface will allow the user to select a product using the product ID, enter the amount they would like to purchase, and complete the purchase. After completing the purchase, it will display the purchase details, which includes the product ID, quantity ordered, product name, department name, price per item, and the subtotal for the amount of items purchased.
@@ -13,11 +13,7 @@ Bamazon is a command line storefront application using Node.js, along with npm p
 * :clipboard: `bamazonManager.js` - [*Managing Inventory and Products*](https://github.com/bessygmartinez/Bamazon#bamazonmanagerjs)
   * This interface will allow the user to view the list of products for sale, view any products that have low inventory, update inventory quantity for a product, and add a new product.
   <br /> <br />
-  
 
-* :chart_with_upwards_trend: `bamazonSupervisor.js` - *View Product Sales and Manage Departments*
-  * Description to come.
-  <br /> <br />
 ---
 
 ## BEFORE USING BAMAZON
