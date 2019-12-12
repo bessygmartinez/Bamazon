@@ -3,7 +3,7 @@
 ---
 
 ## ABOUT BAMAZON
-Bamazon is a command line storefront application using Node.js, along with npm packages, and MySQL database backend. There are two different interfaces to choose from: `bamazonCustomer.js` and `bamazonManager.js`.
+Bamazon is a command line storefront application using Node.js, along with npm packages, and MySQL database backend. There are three different interfaces to choose from: `bamazonCustomer.js`, `bamazonManager.js`, and `bamazonSupervisor.js`.
 
 * :credit_card: `bamazonCustomer.js` - [*Buying Products*](https://github.com/bessygmartinez/Bamazon#bamazoncustomerjs)
   * This interface will allow the user to select a product using the product ID, enter the amount they would like to purchase, and complete the purchase. After completing the purchase, it will display the purchase details, which includes the product ID, quantity ordered, product name, department name, price per item, and the subtotal for the amount of items purchased.
@@ -11,8 +11,11 @@ Bamazon is a command line storefront application using Node.js, along with npm p
   
   
 * :clipboard: `bamazonManager.js` - [*Managing Inventory and Products*](https://github.com/bessygmartinez/Bamazon#bamazonmanagerjs)
-  * This interface will allow the user to view the list of products for sale, view any products that have low inventory, update inventory quantity for a product, and add a new product.
+  * This interface will allow the user to view the list of products for sale, view any products that have low inventory, update inventory quantity for a product, or add a new product.
   <br /> <br />
+  
+* :chart_with_upwards_trend: `bamazonSupervisor.js` - [*View Overhead Costs, Product Sales, and Total Profit by Dept. or Create New Dept.*](https://github.com/bessygmartinez/Bamazon#bamazonsupervisorjs)
+  * This interface will allow the user to view overhead costs, product sales, and total profit per department or create a new department.
 
 ---
 
@@ -45,7 +48,7 @@ MYSQL_PASSWORD=YOUR_PASSWORD_HERE
     * The app will then prompt the user if they would like to try again.
       * If the user chooses "yes/y", then the menu items will be displayed again.
       * If the user chooses "no/n", then the app with display a goodbye message and the app stops running.
-        * **Example:**
+        * **Demo:**
      ![alt text](https://raw.githubusercontent.com/bessygmartinez/Bamazon/master/gifs/BamazonCustomer_Order.gif "bamazonCustomer.js Order")
     
 #### Item ID Does Not Exist     
@@ -54,7 +57,7 @@ MYSQL_PASSWORD=YOUR_PASSWORD_HERE
     * The app will then prompt the user if they would like to try again.
       * If the user chooses "yes/y", then the menu items will be displayed again.
       * If the user chooses "no/n", then the app with display a goodbye message and the app stops running.
-          * **Example:**
+          * **Demo:**
      ![alt text](https://raw.githubusercontent.com/bessygmartinez/Bamazon/master/gifs/BamazonCustomer_ItemNotExist.gif "bamazonCustomer.js Item Doesn't Exist")    
      
 #### Not Enough Stock     
@@ -69,7 +72,7 @@ MYSQL_PASSWORD=YOUR_PASSWORD_HERE
     * The app will then prompt the user if they would like to try again.
       * If the user chooses "yes/y", then the menu items will be displayed again.
       * If the user chooses "no/n", then the app with display a goodbye message and the app stops running. 
-        * **Example:**
+        * **Demo:**
      ![alt text](https://raw.githubusercontent.com/bessygmartinez/Bamazon/master/gifs/BamazonCustomer_NotEnoughStock.gif "bamazonCustomer.js Not Enough Stock")
 ---
      
@@ -84,7 +87,7 @@ If `bamazonManager.js` is run, the app will prompt the user to choose from the f
     * Department Name
     * Price
     * Stock quantity
-      * **Example:**
+      * **Demo:**
       ![alt text](https://raw.githubusercontent.com/bessygmartinez/Bamazon/master/gifs/BamazonManager_ViewProd.gif "bamazonManager.js View Products")
       
 #### View Low Inventory
@@ -93,7 +96,7 @@ If `bamazonManager.js` is run, the app will prompt the user to choose from the f
    * The app will then prompt the user if they would like to try again.
    * If the user chooses "yes/y", then the menu items will be displayed again.
    * If the user chooses "no/n", then the app with display a goodbye message and the app stops running. 
-      * **Example:**
+      * **Demo:**
   ![alt text](https://raw.githubusercontent.com/bessygmartinez/Bamazon/master/gifs/BamazonManager_ViewLowInv.gif "bamazonManager.js View Low Inventory")
   
 #### Update Product Quantity
@@ -104,7 +107,7 @@ If `bamazonManager.js` is run, the app will prompt the user to choose from the f
    * The app will then prompt the user if they would like to try again.
    * If the user chooses "yes/y", then the menu items will be displayed again.
    * If the user chooses "no/n", then the app with display a goodbye message and the app stops running. 
-      * **Example:**
+      * **Demo:**
   ![alt text](https://raw.githubusercontent.com/bessygmartinez/Bamazon/master/gifs/BamazonManager_UpdateProdQty.gif "bamazonManager.js Update Product Inventory")
   
 #### Add New Product
@@ -117,9 +120,35 @@ If `bamazonManager.js` is run, the app will prompt the user to choose from the f
    * Then it will prompt the user if they would like to try again.
     * If the user chooses "yes/y", then the menu items will be displayed again.
     * If the user chooses "no/n", then the app with display a goodbye message and the app stops running. 
-      * **Example:**
+      * **Demo:**
   ![alt text](https://raw.githubusercontent.com/bessygmartinez/Bamazon/master/gifs/BamazonManager_AddNewProd.gif "bamazonManager.js Add New Product")
+---
 
+## `bamazonSupervisor.js`
+### :chart_with_upwards_trend: View Overhead Costs, Product Sales, and Total Profit by Dept. or Create New Dept.
+If `bamazonSupervisor.js` is run, the app will prompt the user to choose from the following two options:
+
+#### View Product Sales by Department
+* If the user chooses `View Product Sales by Department`, the app will display a table listing all the departments in the database with the following information:
+   * Department ID, Department Name, Overhead Costs, Product Sales, and Total Profit.
+   * The app will retrieve the product sales per department and display the sum.
+   * It will also display the total profit by subtracting the product sales from the overhead costs.
+   * The app will then prompt the user if they would like to try again.
+   * If the user chooses "yes/y", then the menu items will be displayed again.
+   * If the user chooses "no/n", then the app with display a goodbye message and the app stops running. 
+      * **Demo:**
+  ![alt text](https://raw.githubusercontent.com/bessygmartinez/Bamazon/master/gifs/BamazonSupervisor_ViewProdSales.gif "bamazonSupervisor.js View Product Sales")
+  
+#### Create New Department
+ * If the user chooses `Create New Department`, the user will be given the opportunity to create a new department to Bamazon.
+   * The app will prompt the user to enter the name of the department they would like to create.
+   * After a department name is entered, it will prompt the user to enter the overhead costs.
+   * The app will then update the database with the new department, prompt the user that the department has been added, and will display a table with the information that was entered by the user.
+   * Then it will prompt the user if they would like to try again.
+    * If the user chooses "yes/y", then the menu items will be displayed again.
+    * If the user chooses "no/n", then the app with display a goodbye message and the app stops running. 
+      * **Demo:**
+  ![alt text](https://raw.githubusercontent.com/bessygmartinez/Bamazon/master/gifs/BamazonSupervisor_AddNewDept.gif "bamazonSupervisor.js Create New Department")
 ---
     
 ## TECHNOLOGIES USED
