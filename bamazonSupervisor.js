@@ -62,7 +62,8 @@ const viewProductSales = () => {
         res.forEach(res => {
         let overheadCosts = formatMoney(`${res.over_head_costs}`);
         let totalProfit = formatMoney(`${res.total_profit}`);
-        table.push([`${res.department_id}`, `${res.department_name}`, `$${overheadCosts}`, `$${res.product_sales}`, `$${totalProfit}`])
+        let productSales = formatMoney(`${res.product_sales}`)
+        table.push([`${res.department_id}`, `${res.department_name}`, `$${overheadCosts}`, `$${productSales}`, `$${totalProfit}`])
         })
         console.log(`
 ┌─┐┬─┐┌─┐┌┬┐┬ ┬┌─┐┌┬┐  ┌─┐┌─┐┬  ┌─┐┌─┐  ┌┐ ┬ ┬  ┌┬┐┌─┐┌─┐┌┬┐
