@@ -43,9 +43,14 @@ PRIMARY KEY (department_id)
 );
 
 INSERT INTO departments (department_name, over_head_costs)
-VALUES ('Books', 500)
-, ('Clothing, Shoes & Jewelry', 3254)
-, ('Electronics', 20000)
-, ('Beauty & Personal Care', 4337)
-, ('Grocery & Gourmet Food', 1032)
-, ('Home & Kitchen', 16400);
+VALUES ('Books', 300)
+, ('Clothing, Shoes & Jewelry', 1000)
+, ('Electronics', 3000)
+, ('Beauty & Personal Care', 800)
+, ('Grocery & Gourmet Food', 937)
+, ('Home & Kitchen', 1640);
+
+drop table departments;
+drop table products;
+
+select * from departments;
