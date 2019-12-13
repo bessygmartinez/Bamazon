@@ -86,12 +86,13 @@ const viewLowInventory = () => {
         })
         res.forEach(res => {
             let formattedPrice = formatMoney(`${res.price}`);
-            console.log(`
+
+            table.push([`${res.id}`, `${res.product_name}`, `${res.department_name}`, `$${formattedPrice}`, `${res.stock_quantity}`])
+        })            
+        console.log(`
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 Stock is currently low on these products:        
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+\n`.bold.brightRed)
-            table.push([`${res.id}`, `${res.product_name}`, `${res.department_name}`, `$${formattedPrice}`, `${res.stock_quantity}`])
-        })
         console.log(table.toString());
         tryAgain();
     })
