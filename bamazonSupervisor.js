@@ -53,7 +53,7 @@ const runMenuCommand = (menuItemCommand) => {
 };
 
 const viewProductSales = () => {
-    query = "SELECT departments.department_id, departments.department_name, departments.over_head_costs, SUM(product_sales) AS product_sales, departments.over_head_costs - SUM(product_sales) AS total_profit FROM departments LEFT JOIN products ON departments.department_name=products.department_name GROUP BY (departments.department_name);"
+    query = "SELECT departments.department_id, departments.department_name, departments.over_head_costs, SUM(product_sales) AS product_sales, SUM(product_sales) - departments.over_head_costs AS total_profit FROM departments LEFT JOIN products ON departments.department_name=products.department_name GROUP BY (departments.department_name);"
     connection.query(query, (err, res) => {
         if (err) throw err;
         let table = new Table({
