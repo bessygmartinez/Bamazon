@@ -49,8 +49,3 @@ VALUES ('Books', 300)
 , ('Beauty & Personal Care', 800)
 , ('Grocery & Gourmet Food', 937)
 , ('Home & Kitchen', 1640);
-
-drop table departments;
-drop table products;
-
-select * from departments;
